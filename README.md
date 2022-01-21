@@ -28,6 +28,7 @@ Twitter API, Flume, Kafka, AWS Comprehend (Python), Kafka Connect (Python), Elas
 
 ### Tech used throughout course
 Hadoop, HDFS, Redis, MapReduce, Avro, Kafka, Spark (streaming), ElasticSearch, Kibana, NoSQL
+
 **AWS tools**: EMR, EC2, RedShift, CloudFormation
 
 ### Course Description
