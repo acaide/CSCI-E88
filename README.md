@@ -27,7 +27,8 @@ https://youtu.be/oDCv5LeM0ME
 Twitter API, Flume, Kafka, AWS Comprehend (Python), Kafka Connect (Python), ElasticSearch, Kibana
 
 ### Tech used throughout course
-Hadoop, HDFS, Kafka, Spark, AWS (EC2, RedShift, CloudFormation), ElasticSearch, Kibana, NoSQL
+Hadoop, HDFS, Redis, MapReduce, Avro, Kafka, Spark (streaming), ElasticSearch, Kibana, NoSQL
+**AWS tools**: EMR, EC2, RedShift, CloudFormation
 
 ### Course Description
 The goal of this course is to learn core principles of building highly distributed, highly available systems for processing large volumes of data with historical and near real-time querying capabilities. We cover the stages of data processing that are common to most real-world systems, including high-volume, high-speed data ingestion, historical and real-time metrics aggregation, techniques to address unique counts, data de-duplication and reprocessing, storage options, distributed data indexing, and search. We review approaches to solving common challenges of such systems and get hands-on experience implementing some of them. We look at trends and the evolution of data processing and analytics with special attention to the modern data stack and the resulting advances in data warehousing, data lakes, and data mesh solutions. The focus of this course is on understanding the challenges and core principles of big data processing, not on specific frameworks or technologies used for implementation. We review a few notable technologies for each area with a deeper dive into a few select ones. The course is structured as a progression of topics covering the full, end-to-end data processing pipeline typical in real-world scenarios.
