@@ -17,7 +17,10 @@ The pipeline is as follows:
 
 - More about this project can be read in the included doc. file!
 
+### YouTube Vid 
 
+The PI required us to walk through the project via creating a YouTube video. Apologies for the poor quality (360p), and my voice. 
+https://youtu.be/oDCv5LeM0ME
 
 ### Tech used in Final Project
 
