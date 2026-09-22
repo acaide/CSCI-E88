@@ -1,0 +1,100 @@
+Start kafka-zookeeper from template
+
+Ignore zookeeper broker, ssh into kafka broker
+
+Go to /app/kafka.../[root]
+
+Vim/investigate config/server.properties,find where zookeeper is. 
+172.31.11.76:2181
+
+** While youre in config/server.properties, find the advertised.listeners:
+...=PLAINTEXT://18.205.2.251:9092
+The '18.205.2.251:9092' should be added to Flume's sink.
+
+use the example code to run kafka instances:
+/app/kafka/kafka_2.11-2.0.0/bin/kafka-topics.sh --zookeeper 172.31.11.76:2181 --create --topic apple --partitions 2 --replication-factor 1
+/app/kafka/kafka_2.11-2.0.0/bin/kafka-topics.sh --zookeeper 172.31.11.76:2181 --create --topic tesla --partitions 2 --replication-factor 1
+/app/kafka/kafka_2.11-2.0.0/bin/kafka-topics.sh --zookeeper 172.31.11.76:2181 --create --topic microsoft --partitions 2 --replication-factor 1
+
+purge kafka in case:
+/app/kafka/kafka_2.11-2.0.0/bin/kafka-topics.sh --zookeeper 172.31.11.76:2181 --delete --topic apple
+
+download flume
+wget http://ftp.naz.com/apache/flume/1.6.0/apache-flume-1.6.0-bin.tar.gz .
+
+untar
+tar -zxvf apache-flume-1.6.0-bin.tar.gz 
+
+clean
+rm apache-flume-1.6.0-bin.tar.gz 
+
+add flume to basepath:
+vim .bashrc
+
+export FLUME_HOME=/home/ec2-user/apache-flume-1.6.0-bin/
+export PATH=$PATH:$FLUME_HOME/bin/
+
+save quit confirm
+source .bashrc
+
+copy flume file to directory <local>
+scp -i CS88NV.pem flume-conf.properties ec2-user@ec2-18-205-2-251.compute-1.amazonaws.com:./apache-flume-1.6.0-bin/conf/
+
+listen to kafka:
+# On aws:
+/app/kafka/kafka_2.11-2.0.0/bin/kafka-console-consumer.sh --bootstrap-server 18.205.2.251:9092 --topic apple --from-beginning
+# Locally
+bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic Test --from-beginning
+
+# Clean zookeeper and kafka:
+sudo rm -rf /tmp/zookeeper
+sudo rm -rf /tmp/kafka-logs
+
+Let's test out flume now:
+
+flume-ng agent -n apple -c appleconf/conf/ -f appleconf/conf/flume-conf.properties
+
+
+flume-ng agent -n apple -c hw7/conf/ -f hw7/conf/flume-conf.properties Dflume.root.logger=DEBUG,console --name a1 -Xmx512m -Xms256m
+
+flume-ng agent --conf conf --conf-file conf/flume-sample.conf  -Dflume.root.logger=DEBUG,console --name a1 -Xmx512m -Xms256m
+
+install python3:
+sudo yum install python36 python36-devel python36-libs python36-tools
+
+
+export CLASSPATH="/home/ec2-user/apache-flume-1.6.0-bin/lib/*:~/FinalProject2/flume/mytwittersource/*"
+
+# Write new kafka topic
+bin/kafka-topics --zookeeper localhost:2181 --create --topic test-sink --partitions 2 --replication-factor 1
+
+# purge it
+bin/kafka-topics --zookeeper localhost:2181 --delete --topic test-sink
+
+# listen
+bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test-sink --from-beginning
+
+# Write by hand
+bin/kafka-avro-console-producer --broker-list localhost:9092 --topic test-sink --property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"f1","type":"string"}]}'
+{"f1": "value1"}
+
+
+# Tesla stuff
+bin/kafka-topics --zookeeper localhost:2181 --create --topic tesla --partitions 2 --replication-factor 1
+
+bin/kafka-topics --zookeeper localhost:2181 --delete --topic tesla
+
+bin/kafka-avro-console-producer --broker-list localhost:9092 --topic test-elasticsearch-sink --property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"f1","type":"string"}]}'
+
+
+
+bin/kafka-avro-console-producer --broker-list localhost:9092 --topic tesla --property value.schema='{"type":"record","name":"tweet","fields":[{"name":"user","type":"string"},{"name":"tweet","type":"string"},{"name":"time","type":"int"},{"name":"sentiment","type":"string"},{"name":"compositeScore","type":"float"},{"name":"negScore","type":"float"},{"name":"posScore","type":"float"},{"name":"geo","type":"string"},{"name":"coordinates","type":"string"}]}'
+
+
+
+curl -X PUT http://localhost:8081/config -d '{"compatibility": "NONE"}' -H "Content-Type:application/json"
+
+
+{
+            "type":"long", "logicalType":"timestamp-millis"}
+        
